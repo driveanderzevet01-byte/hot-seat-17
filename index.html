@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>HOT SEAT - TEXT 17</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #0f1117;
+            color: #e8edf5;
+            font-family: 'Segoe UI', 'Helvetica Neue', system-ui, -apple-system, sans-serif;
+            padding: 1rem;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            font-size: 16px;
+        }
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: #181c25;
+            border-radius: 28px;
+            padding: 1.5rem 1.2rem 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+            border: 1px solid #2b313e;
+        }
+        h1 {
+            font-size: 1.7rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            color: #f0f4fd;
+            border-bottom: 1px solid #2b313e;
+            padding-bottom: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        h1 small {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #9aa8c7;
+        }
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #b6c4e0;
+            margin: 1.2rem 0 0.8rem 0;
+            border-left: 4px solid #3b5b7a;
+            padding-left: 0.8rem;
+        }
+        .form-group {
+            margin-bottom: 0.9rem;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            color: #b6c4e0;
+            margin-bottom: 0.25rem;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 0.6rem 0.9rem;
+            border-radius: 12px;
+            border: 1px solid #2f384b;
+            background: #1a212e;
+            color: #e8edf5;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.15s;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        .form-group input:focus {
+            border-color: #4d6f92;
+            box-shadow: 0 0 0 2px rgba(59,91,122,0.3);
+        }
+        .form-group input::placeholder {
+            color: #5d6d89;
+        }
+        .btn {
+            border: none;
+            padding: 0.65rem 1.8rem;
+            border-radius: 60px;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.15s;
+            border: 1px solid transparent;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-primary {
+            background: #3b5b7a;
+            color: white;
+            border-color: #4d6f92;
+            box-shadow: 0 4px 10px rgba(0,20,40,0.5);
+        }
+        .btn-primary:hover {
+            background: #4a6f93;
+            transform: scale(0.97);
+        }
+        .btn-success {
+            background: #2d5a40;
+            color: white;
+            border-color: #3c7a57;
+        }
+        .btn-success:hover {
+            background: #3a704f;
+            transform: scale(0.97);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #43506b;
+            color: #dce6f5;
+        }
+        .btn-outline:hover {
+            background: #1f2737;
+            border-color: #6a7b9b;
+        }
+        .btn-group {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.5rem 0.8rem;
+            background: #1a212e;
+            border-radius: 12px;
+            border: 1px solid #2f384b;
+            margin-bottom: 0.8rem;
+        }
+        .status-bar span {
+            color: #b7c9e6;
+            font-size: 0.85rem;
+        }
+        .timer-display {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #7a9bcb;
+            padding: 0.2rem 1rem;
+            background: #0d131e;
+            border-radius: 40px;
+            border: 1px solid #2f384b;
+        }
+        .timer-warning {
+            color: #f5b3b3;
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .question-item {
+            background: #1e2531;
+            border-radius: 14px;
+            padding: 0.9rem 1.2rem;
+            border: 1px solid #2c3445;
+            margin-bottom: 0.7rem;
+        }
+        .question-item .q-text {
+            font-weight: 500;
+            color: #eef3fc;
+            margin-bottom: 0.3rem;
+            font-size: 0.95rem;
+        }
+        .question-item .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            padding-left: 0.2rem;
+        }
+        .question-item .options label {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: #d6e0f0;
+            cursor: pointer;
+            padding: 0.25rem 0.6rem;
+            border-radius: 8px;
+            transition: 0.1s;
+            font-size: 0.92rem;
+            touch-action: manipulation;
+            min-height: 2.2rem;
+            word-break: break-word;
+        }
+        .question-item .options label:hover {
+            background: #1f2a3b;
+        }
+        .question-item .options input[type="radio"] {
+            accent-color: #7a9bcb;
+            width: 1rem;
+            height: 1rem;
+            flex-shrink: 0;
+            margin: 0;
+        }
+        .answer-review {
+            margin-top: 0.4rem;
+            padding: 0.4rem 0.7rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+        .answer-correct { background: #1d3a2a; color: #9bdeac; }
+        .answer-wrong { background: #3d2025; color: #f5b3b3; }
+        .answer-unanswered { background: #2a2f3d; color: #b7c2db; }
+        .review-container {
+            margin-top: 1.2rem;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .warning-box {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #3d2025;
+            border: 2px solid #f5b3b3;
+            padding: 1rem 1.5rem;
+            border-radius: 16px;
+            color: #f5b3b3;
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            min-width: 280px;
+            max-width: 90%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            animation: slideDown 0.3s ease;
+        }
+        @keyframes slideDown {
+            from { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
+        .warning-box.active {
+            display: flex;
+        }
+        .warning-box .warning-count {
+            font-weight: 700;
+            font-size: 1.2rem;
+            background: #1a212e;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            border: 1px solid #7a3a3a;
+        }
+        .warning-box .warning-close {
+            background: transparent;
+            border: none;
+            color: #f5b3b3;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0 0.3rem;
+        }
+        .warning-box .warning-close:hover {
+            color: #fff;
+        }
+        .score-display {
+            background: #2a3343;
+            padding: 0.15rem 1rem;
+            border-radius: 40px;
+            font-weight: 600;
+            color: #d6e2ff;
+            border: 1px solid #3d475e;
+            font-size: 0.85rem;
+        }
+        .result-summary {
+            background: #141b26;
+            padding: 1.2rem;
+            border-radius: 14px;
+            border: 1px solid #2d3d55;
+        }
+        .anti-cheat-status {
+            font-size: 0.75rem;
+            color: #5d6d89;
+            text-align: center;
+            margin-top: 0.3rem;
+        }
+        @media print {
+            body { background: white; color: black; }
+            .container { background: white; border: 1px solid #ccc; box-shadow: none; }
+            .btn, .btn-group, .status-bar .timer-display, .warning-box { display: none !important; }
+            .question-item { background: #f5f5f5; border-color: #ccc; }
+            .question-item .q-text { color: #222; }
+            .question-item .options label { color: #333; }
+            .answer-review { border: 1px solid #ccc; }
+            .answer-correct { background: #d4edda; color: #155724; }
+            .answer-wrong { background: #f8dddd; color: #721c24; }
+            .answer-unanswered { background: #eae6df; color: #333; }
+            .review-container { max-height: none; }
+            .result-summary { background: #f5f5f5; border-color: #ccc; }
+            .section-title { color: #222; }
+            h1 { color: #222; border-color: #ccc; }
+            .status-bar { background: #eee; border-color: #ccc; }
+            .timer-display { background: #eee; border-color: #ccc; color: #222; }
+            .anti-cheat-status { display: none; }
+        }
+        @media (max-width: 600px) {
+            .container { padding: 1rem 0.8rem; }
+            .question-item { padding: 0.7rem 0.9rem; }
+            .question-item .options label { font-size: 0.88rem; padding: 0.2rem 0.4rem; }
+            .btn { padding: 0.55rem 1.2rem; font-size: 0.9rem; }
+            .timer-display { font-size: 1.1rem; }
+            .warning-box { min-width: auto; width: 95%; top: 10px; padding: 0.8rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Warning Popup -->
+<div class="warning-box" id="warningBox">
+    <span id="warningMsg">⚠️ Warning! Please stay on the quiz page.</span>
+    <span class="warning-count" id="warningCount">1 / 2</span>
+    <button class="warning-close" id="warningCloseBtn">✕</button>
+</div>
+
+<div class="container" id="app">
+    <h1>🔥 HOT SEAT <small>Text 17</small></h1>
+
+    <!-- STEP 1: Personal Info -->
+    <div id="step1">
+        <div class="section-title">👤 Personal Information</div>
+        <div class="form-group">
+            <label for="studentName">Full Name</label>
+            <input type="text" id="studentName" placeholder="Enter your full name">
+        </div>
+        <div class="form-group">
+            <label for="studentId">Student Number</label>
+            <input type="text" id="studentId" placeholder="Enter your student number">
+        </div>
+        <div class="form-group">
+            <label for="studentClass">Class</label>
+            <input type="text" id="studentClass" placeholder="Enter your class">
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-primary" id="startBtn">▶ Start Quiz</button>
+        </div>
+        <div class="anti-cheat-status">🔒 Anti-cheat active · 2 warnings = auto-submit · 45-minute timer</div>
+    </div>
+
+    <!-- STEP 2: Quiz (all questions) -->
+    <div id="step2" class="hidden">
+        <div class="status-bar">
+            <span>📝 Quiz in Progress</span>
+            <span id="quizTimer" class="timer-display">45:00</span>
+            <span class="score-display" id="answeredCount">0 / 40 answered</span>
+        </div>
+        <div id="quizQuestions"></div>
+        <div class="btn-group">
+            <button class="btn btn-success" id="submitBtn">📤 Submit & Show Results</button>
+            <button class="btn btn-outline" id="previewBtn">👁 Preview Answers</button>
+        </div>
+        <div id="reviewContainer" class="review-container hidden"></div>
+        <div class="anti-cheat-status">🔒 Anti-cheat active - 2 warnings = auto-submit</div>
+    </div>
+
+    <!-- STEP 3: Results -->
+    <div id="step3" class="hidden">
+        <div class="section-title">📊 Quiz Results</div>
+        <div id="resultsSummary" class="result-summary"></div>
+        <div id="fullReviewContainer" class="review-container"></div>
+        <div class="btn-group">
+            <button class="btn btn-primary" id="pdfBtn">📄 Save as PDF</button>
+            <button class="btn btn-outline" id="restartBtn">🔄 Start Over</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ============================================================
+    // ANSWER KEY (from the document)
+    // ============================================================
+    // Vocabulary (1-15)
+    const vocabKey = ['A', 'B', 'C', 'B', 'B', 'A', 'A', 'B', 'C', 'A', 'B', 'B', 'B', 'B', 'A'];
+    // Reading (1-15)
+    const readingKey = ['B', 'C', 'A', 'B', 'A', 'B', 'A', 'B', 'A', 'B', 'A', 'A', 'B', 'C', 'A'];
+    // Grammar (1-10)
+    const grammarKey = ['C', 'B', 'C', 'A', 'B', 'D', 'A', 'D', 'B', 'C'];
+
+    // ============================================================
+    // QUESTION DATA
+    // ============================================================
+
+    // --- Vocabulary (15 questions) ---
+    const vocabData = [
+        { q: 'The teacher used games to ______ students\' creativity.', options: ['stimulate', 'confine', 'propel', 'overlap'], correct: 0 },
+        { q: 'The company introduced an important ______ to its teaching system.', options: ['extinction', 'innovation', 'elevation', 'atmosphere'], correct: 1 },
+        { q: 'The hikers reached a high ______ above the town.', options: ['methodology', 'stratosphere', 'elevation', 'particulate'], correct: 2 },
+        { q: 'The students had to learn the speech through ______.', options: ['improvisation', 'memorization', 'disappearance', 'extinction'], correct: 1 },
+        { q: 'The factory released ______ gases into the air.', options: ['radical', 'noxious', 'extensive', 'terrestrial'], correct: 1 },
+        { q: 'The researchers developed a new ______ for conducting the study.', options: ['methodology', 'innovation', 'multitude', 'undergrowth'], correct: 0 },
+        { q: 'The animal is ______ to a small area of the forest.', options: ['confined', 'spontaneous', 'radical', 'extensive'], correct: 0 },
+        { q: 'The performers acted without preparing their lines.', options: ['taxonomically', 'spontaneously', 'terrestrially', 'extensively'], correct: 1 },
+        { q: 'The storm caused ______ damage to the city.', options: ['deciduous', 'terrestrial', 'catastrophic', 'confined'], correct: 2 },
+        { q: 'The forest contains dense ______ beneath the large trees.', options: ['undergrowth', 'extinction', 'atmosphere', 'methodology'], correct: 0 },
+        { q: 'The researchers found evidence of the ______ ancient event.', options: ['noxious', 'extraterrestrial', 'radical', 'confined'], correct: 1 },
+        { q: 'The new idea was considered ______ because it was very different.', options: ['extensive', 'radical', 'deciduous', 'taxonomic'], correct: 1 },
+        { q: 'A large object can ______ smaller particles into the air.', options: ['stimulate', 'propel', 'memorize', 'confine'], correct: 1 },
+        { q: 'The scientist studied the ______ of several ancient species.', options: ['interpretation', 'extinction', 'methodology', 'innovation'], correct: 1 },
+        { q: 'The company has ______ resources for its new project.', options: ['extensive', 'noxious', 'spontaneous', 'extraterrestrial'], correct: 0 }
+    ];
+
+    // --- Reading Comprehension (15 questions) ---
+    const readingData = [
+        { q: 'What major event is discussed in the first passage?', options: ['A volcanic eruption', 'A historical mass extinction', 'The discovery of a new species', 'The development of astronomy'], correct: 1 },
+        { q: 'About how long ago did the mass extinction occur?', options: ['6 million years ago', '15 million years ago', '65 million years ago', '150 million years ago'], correct: 2 },
+        { q: 'What evidence supports the extraterrestrial theory?', options: ['Cosmic dust', 'Forest plants', 'Animal burrows', 'Acidic oceans'], correct: 0 },
+        { q: 'What could a large meteorite send into the atmosphere?', options: ['Water and oxygen', 'Dust and noxious vapors', 'Plants and animals', 'Rocks and soil'], correct: 1 },
+        { q: 'How could these materials affect Earth\'s temperature?', options: ['They could block sunlight.', 'They could increase rainfall.', 'They could warm the oceans.', 'They could remove clouds.'], correct: 0 },
+        { q: 'What does the second theory suggest caused the extinction?', options: ['Meteorite impacts', 'Volcanic eruptions', 'Ice ages', 'Solar flares'], correct: 1 },
+        { q: 'How many species of Eastern chipmunks are mentioned?', options: ['One', 'Thirteen', 'Twenty-one', 'Thirty'], correct: 0 },
+        { q: 'Where are Eastern chipmunks mainly found?', options: ['California', 'Northeastern United States', 'Northwestern United States', 'Mountain slopes'], correct: 1 },
+        { q: 'Where do many Western chipmunks live?', options: ['Extensive burrows', 'Large cities', 'Ocean islands', 'Desert caves'], correct: 0 },
+        { q: 'How many Western chipmunk species live in California?', options: ['One', 'Thirteen', 'Twenty-one', 'Sixty-five'], correct: 1 },
+        { q: 'What habitat does the Least Chipmunk prefer?', options: ['Sage and brush', 'Dense rainforest', 'Ocean shores', 'High mountain peaks'], correct: 0 },
+        { q: 'Who developed the experimental theater method discussed in the passage?', options: ['Viola Spolin', 'Stephen Emlen', 'Pedro Cabral', 'Napoleon'], correct: 0 },
+        { q: 'What did Spolin believe theatrical training should include?', options: ['More memorization', 'Theatrical games', 'Strict scripts', 'Solo performances'], correct: 1 },
+        { q: 'What is improvisation in the passage?', options: ['A carefully scripted performance', 'A traditional theater style', 'A free performance style', 'A type of memorization'], correct: 2 },
+        { q: 'How can the audience participate in improvisational theater?', options: ['By directing parts of the performance', 'By memorizing the actors\' lines', 'By leaving before the performance', 'By writing the entire script'], correct: 0 }
+    ];
+
+    // --- Grammar (10 questions) ---
+    const grammarData = [
+        { q: 'Identify the verb type of the bolded verb: "Paleontologists **differ** in their interpretation."',
+          options: [
+              'Past simple (V2)',
+              'Gerund (V-ing)',
+              'Base/present verb (V1)',
+              'Past participle (V3)'
+          ], correct: 2 },
+        { q: 'Identify the verb type of the bolded verb: "One group of theorists **focuses** on evidence."',
+          options: [
+              'Past participle (V3)',
+              'Base/present verb (V1)',
+              'Past simple (V2)',
+              'Gerund (V-ing)'
+          ], correct: 1 },
+        { q: 'Identify the verb type of the bolded verb: "Cosmic dust **found** in the geologic record supports the theory."',
+          options: [
+              'Gerund (V-ing)',
+              'Past simple (V2)',
+              'Past participle (V3)',
+              'Base/present verb (V1)'
+          ], correct: 2 },
+        { q: 'Identify the verb type of the bolded verb: "Another group **emphasizes** a terrestrial origin."',
+          options: [
+              'Base/present verb (V1)',
+              'Gerund (V-ing)',
+              'Past participle (V3)',
+              'Past simple (V2)'
+          ], correct: 0 },
+        { q: 'Identify the verb type of the bolded verb: "Thirteen species **dwell** in California."',
+          options: [
+              'Past simple (V2)',
+              'Base/present verb (V1)',
+              'Past participle (V3)',
+              'Gerund (V-ing)'
+          ], correct: 1 },
+        { q: 'Identify the verb type of the bolded verb: "The most common species **lives** in a range."',
+          options: [
+              'Gerund (V-ing)',
+              'Past participle (V3)',
+              'Past simple (V2)',
+              'Base/present verb (V1)'
+          ], correct: 3 },
+        { q: 'Identify the verb type of the bolded verb: "Spolin **believed** that training should be expanded."',
+          options: [
+              'Past simple (V2)',
+              'Base/present verb (V1)',
+              'Gerund (V-ing)',
+              'Past participle (V3)'
+          ], correct: 0 },
+        { q: 'Identify the verb type of the bolded verb: "Spolin\'s ideas **laid** the foundation for improvisation."',
+          options: [
+              'Past participle (V3)',
+              'Gerund (V-ing)',
+              'Base/present verb (V1)',
+              'Past simple (V2)'
+          ], correct: 3 },
+        { q: 'Identify the verb type of the bolded verb: "Actors **asked** the audience for inspiration."',
+          options: [
+              'Past participle (V3)',
+              'Past simple (V2)',
+              'Base/present verb (V1)',
+              'Gerund (V-ing)'
+          ], correct: 1 },
+        { q: 'Identify the verb type of the bolded verb: "Improvisational actors often **performed** spontaneously."',
+          options: [
+              'Gerund (V-ing)',
+              'Past participle (V3)',
+              'Past simple (V2)',
+              'Base/present verb (V1)'
+          ], correct: 2 }
+    ];
+
+    // Combine all into one array
+    const allQuestions = [
+        ...vocabData.map((item, i) => ({ ...item, section: 'Vocabulary', index: i + 1 })),
+        ...readingData.map((item, i) => ({ ...item, section: 'Reading', index: i + 1 })),
+        ...grammarData.map((item, i) => ({ ...item, section: 'Grammar', index: i + 1 }))
+    ];
+
+    // ============================================================
+    // STATE
+    // ============================================================
+    let selected = new Array(allQuestions.length).fill(-1);
+    let checkedState = new Array(allQuestions.length).fill(false);
+
+    let warnings = 0;
+    const maxWarnings = 2;
+    let isSubmitted = false;
+    let quizTimer = null;
+    let quizTimeLeft = 2700; // 45 minutes in seconds
+    let warningActive = false;
+    let warningTimeout = null;
+
+    // DOM refs
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+    const quizContainer = document.getElementById('quizQuestions');
+    const reviewContainer = document.getElementById('reviewContainer');
+    const fullReviewContainer = document.getElementById('fullReviewContainer');
+    const resultsSummary = document.getElementById('resultsSummary');
+    const quizTimerDisplay = document.getElementById('quizTimer');
+    const answeredCount = document.getElementById('answeredCount');
+    const warningBox = document.getElementById('warningBox');
+    const warningCount = document.getElementById('warningCount');
+    const warningMsg = document.getElementById('warningMsg');
+    const warningCloseBtn = document.getElementById('warningCloseBtn');
+
+    // ============================================================
+    // RENDER QUESTIONS
+    // ============================================================
+    function renderQuestions() {
+        let html = '';
+        for (let i = 0; i < allQuestions.length; i++) {
+            const item = allQuestions[i];
+            const sel = selected[i];
+            const checked = checkedState[i];
+
+            let badge = '';
+            if (checked && sel === -1) badge = '<span class="answer-review answer-unanswered">⚠️ Not answered</span>';
+            else if (checked && sel === item.correct) badge = '<span class="answer-review answer-correct">✓ Correct</span>';
+            else if (checked && sel !== -1) badge = '<span class="answer-review answer-wrong">✗ Wrong</span>';
+
+            let optsHtml = '';
+            for (let j = 0; j < item.options.length; j++) {
+                const checkedAttr = (sel === j) ? 'checked' : '';
+                const letter = String.fromCharCode(65 + j);
+                optsHtml += `
+                    <label>
+                        <input type="radio" name="q_${i}" value="${j}" ${checkedAttr} data-q="${i}" data-opt="${j}">
+                        ${letter}. ${item.options[j]}
+                    </label>
+                `;
+            }
+
+            // Section label
+            let sectionLabel = '';
+            if (i === 0) sectionLabel = '<div style="margin: 1rem 0 0.5rem 0; color:#7a9bcb; font-weight:600; font-size:1rem;">📖 Vocabulary</div>';
+            else if (i === 15) sectionLabel = '<div style="margin: 1.5rem 0 0.5rem 0; color:#7a9bcb; font-weight:600; font-size:1rem;">📚 Reading Comprehension</div>';
+            else if (i === 30) sectionLabel = '<div style="margin: 1.5rem 0 0.5rem 0; color:#7a9bcb; font-weight:600; font-size:1rem;">✏️ Grammar</div>';
+
+            html += sectionLabel;
+            html += `
+                <div class="question-item">
+                    <div class="q-text">${item.section} ${item.index}. ${item.q}</div>
+                    <div class="options">${optsHtml}</div>
+                    ${badge}
+                    ${checked ? `<div style="font-size:0.8rem; color:#7a9bcb; margin-top:0.2rem;">Correct: ${String.fromCharCode(65 + item.correct)}</div>` : ''}
+                </div>
+            `;
+        }
+        quizContainer.innerHTML = html;
+        attachRadioListeners();
+        updateAnsweredCount();
+    }
+
+    function attachRadioListeners() {
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const qIdx = parseInt(this.dataset.q);
+                const optIdx = parseInt(this.dataset.opt);
+                if (isNaN(qIdx) || isNaN(optIdx)) return;
+                selected[qIdx] = optIdx;
+                if (checkedState[qIdx]) checkedState[qIdx] = false;
+                updateAnsweredCount();
+                if (!isSubmitted) reviewContainer.classList.add('hidden');
+            });
+        });
+    }
+
+    function updateAnsweredCount() {
+        const answered = selected.filter(v => v !== -1).length;
+        answeredCount.textContent = `${answered} / ${allQuestions.length} answered`;
+    }
+
+    // ============================================================
+    // NAVIGATION
+    // ============================================================
+    function goToStep(step) {
+        [step1, step2, step3].forEach(el => el.classList.add('hidden'));
+        if (step === 1) step1.classList.remove('hidden');
+        else if (step === 2) step2.classList.remove('hidden');
+        else if (step === 3) step3.classList.remove('hidden');
+
+        warnings = 0;
+        warningBox.classList.remove('active');
+        warningActive = false;
+        if (warningTimeout) {
+            clearTimeout(warningTimeout);
+            warningTimeout = null;
+        }
+    }
+
+    // ============================================================
+    // ANTI-CHEAT SYSTEM - 2 WARNINGS
+    // ============================================================
+    function showWarning() {
+        if (isSubmitted) return;
+        if (warningActive) return;
+
+        warnings++;
+        warningActive = true;
+
+        warningBox.classList.add('active');
+        warningCount.textContent = `${warnings} / ${maxWarnings}`;
+
+        const msgs = [
+            '⚠️ Warning! Please stay on the quiz page. Switching tabs is not allowed.',
+            '🚨 FINAL WARNING! Auto-submitting your answers...'
+        ];
+        warningMsg.textContent = msgs[Math.min(warnings - 1, 1)];
+
+        if (warningTimeout) clearTimeout(warningTimeout);
+        warningTimeout = setTimeout(() => {
+            warningBox.classList.remove('active');
+            warningActive = false;
+            warningTimeout = null;
+        }, 3500);
+
+        if (warnings >= maxWarnings) {
+            setTimeout(() => {
+                if (!isSubmitted) {
+                    alert('⚠️ 2 warnings reached. Your answers have been auto-submitted.');
+                    warningBox.classList.remove('active');
+                    warningActive = false;
+                    submitQuiz();
+                }
+            }, 2000);
+        }
+    }
+
+    warningCloseBtn.addEventListener('click', function() {
+        warningBox.classList.remove('active');
+        warningActive = false;
+        if (warningTimeout) {
+            clearTimeout(warningTimeout);
+            warningTimeout = null;
+        }
+    });
+
+    let antiCheatInitialized = false;
+
+    function handleVisibilityChange() {
+        if (isSubmitted) return;
+        if (document.hidden) showWarning();
+    }
+
+    function handleBlur() {
+        if (isSubmitted) return;
+        setTimeout(() => {
+            if (!isSubmitted && !document.hasFocus()) {
+                showWarning();
+            }
+        }, 300);
+    }
+
+    function handlePageHide(e) {
+        if (isSubmitted) return;
+        showWarning();
+    }
+
+    function handleBeforeUnload(e) {
+        if (isSubmitted) return;
+        e.preventDefault();
+        e.returnValue = 'You are about to leave the quiz. Your progress may be lost.';
+        return e.returnValue;
+    }
+
+    function setupAntiCheat() {
+        if (antiCheatInitialized) return;
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        document.addEventListener('blur', handleBlur);
+        document.addEventListener('pagehide', handlePageHide);
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        antiCheatInitialized = true;
+        console.log('✅ Anti-cheat system initialized (2 warnings)');
+    }
+
+    function removeAntiCheat() {
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+        document.removeEventListener('blur', handleBlur);
+        document.removeEventListener('pagehide', handlePageHide);
+        window.removeEventListener('beforeunload', handleBeforeUnload);
+        antiCheatInitialized = false;
+    }
+
+    // ============================================================
+    // TIMER (45 minutes)
+    // ============================================================
+    function startQuizTimer() {
+        if (quizTimer) clearInterval(quizTimer);
+        quizTimeLeft = 2700;
+        quizTimerDisplay.textContent = '45:00';
+        quizTimerDisplay.classList.remove('timer-warning');
+        quizTimer = setInterval(() => {
+            quizTimeLeft--;
+            quizTimerDisplay.textContent = formatTime(quizTimeLeft);
+            if (quizTimeLeft <= 300) quizTimerDisplay.classList.add('timer-warning');
+            if (quizTimeLeft <= 0) {
+                clearInterval(quizTimer);
+                quizTimer = null;
+                if (!isSubmitted) {
+                    alert('Time is up! Auto-submitting your answers.');
+                    submitQuiz();
+                }
+            }
+        }, 1000);
+    }
+
+    function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    // ============================================================
+    // SUBMIT & REVIEW
+    // ============================================================
+    function submitQuiz() {
+        if (isSubmitted) return;
+        isSubmitted = true;
+        removeAntiCheat();
+
+        for (let i = 0; i < allQuestions.length; i++) checkedState[i] = true;
+
+        // Calculate scores per section
+        let vocabCorrect = 0, readingCorrect = 0, grammarCorrect = 0;
+        for (let i = 0; i < 15; i++) {
+            if (selected[i] === allQuestions[i].correct) vocabCorrect++;
+        }
+        for (let i = 15; i < 30; i++) {
+            if (selected[i] === allQuestions[i].correct) readingCorrect++;
+        }
+        for (let i = 30; i < 40; i++) {
+            if (selected[i] === allQuestions[i].correct) grammarCorrect++;
+        }
+        const totalCorrect = vocabCorrect + readingCorrect + grammarCorrect;
+        const totalQuestions = allQuestions.length;
+
+        renderQuestions();
+
+        // Build review
+        let reviewHtml = '<h3 style="margin-bottom:0.8rem; color:#d6e5ff;">📝 Full Review - All Answers</h3>';
+
+        const name = document.getElementById('studentName').value.trim() || 'Not provided';
+        const id = document.getElementById('studentId').value.trim() || 'Not provided';
+        const cls = document.getElementById('studentClass').value.trim() || 'Not provided';
+        reviewHtml += `
+            <div style="background:#1a212e; padding:0.8rem; border-radius:12px; margin-bottom:1rem; border:1px solid #2f384b;">
+                <div><strong>Name:</strong> ${name}</div>
+                <div><strong>Student Number:</strong> ${id}</div>
+                <div><strong>Class:</strong> ${cls}</div>
+                <div><strong>Date:</strong> ${new Date().toLocaleDateString()}</div>
+            </div>
+        `;
+
+        reviewHtml += `
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.8rem; margin-bottom:1rem;">
+                <div style="background:#1a212e; padding:0.8rem; border-radius:12px; text-align:center; border:1px solid #2f384b;">
+                    <div style="font-size:1.6rem; color:#7a9bcb;">${vocabCorrect}/15</div>
+                    <div style="color:#b7c9e6;">Vocabulary</div>
+                </div>
+                <div style="background:#1a212e; padding:0.8rem; border-radius:12px; text-align:center; border:1px solid #2f384b;">
+                    <div style="font-size:1.6rem; color:#7a9bcb;">${readingCorrect}/15</div>
+                    <div style="color:#b7c9e6;">Reading</div>
+                </div>
+                <div style="background:#1a212e; padding:0.8rem; border-radius:12px; text-align:center; border:1px solid #2f384b;">
+                    <div style="font-size:1.6rem; color:#7a9bcb;">${grammarCorrect}/10</div>
+                    <div style="color:#b7c9e6;">Grammar</div>
+                </div>
+            </div>
+            <div style="background:#2d5a40; padding:0.8rem; border-radius:12px; text-align:center; margin-bottom:1rem; border:1px solid #3c7a57;">
+                <div style="font-size:1.8rem; color:#9bdeac;">${totalCorrect}/${totalQuestions}</div>
+                <div style="color:#b7c9e6;">Total Score</div>
+            </div>
+        `;
+
+        // Section reviews
+        const sections = [
+            { name: '📖 Vocabulary', start: 0, end: 15 },
+            { name: '📚 Reading Comprehension', start: 15, end: 30 },
+            { name: '✏️ Grammar', start: 30, end: 40 }
+        ];
+
+        for (const sec of sections) {
+            reviewHtml += `<div style="margin:1rem 0 0.5rem 0; border-top:1px solid #2f384b; padding-top:0.8rem;"><strong style="color:#7a9bcb; font-size:1.1rem;">${sec.name}</strong></div>`;
+            for (let i = sec.start; i < sec.end; i++) {
+                const item = allQuestions[i];
+                const sel = selected[i];
+                const isCorrect = sel === item.correct;
+                const userAnswer = sel !== -1 ? item.options[sel] : '(not answered)';
+                const letter = sel !== -1 ? String.fromCharCode(65 + sel) : '-';
+                const correctLetter = String.fromCharCode(65 + item.correct);
+                const statusClass = isCorrect ? 'answer-correct' : (sel !== -1 ? 'answer-wrong' : 'answer-unanswered');
+                const icon = isCorrect ? '✅' : (sel !== -1 ? '❌' : '⚠️');
+                reviewHtml += `
+                    <div class="question-item" style="margin-bottom:0.5rem;">
+                        <div class="q-text">${item.section} ${item.index}. ${item.q}</div>
+                        <div class="answer-review ${statusClass}">${icon} Your answer: ${letter}. ${userAnswer}</div>
+                        <div style="color:#9bdeac; font-size:0.85rem; margin-top:0.2rem;">Correct: ${correctLetter}. ${item.options[item.correct]}</div>
+                    </div>
+                `;
+            }
+        }
+
+        let summaryHtml = `
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.8rem; margin-bottom:1rem;">
+                <div style="background:#1a212e; padding:0.8rem; border-radius:12px; text-align:center; border:1px solid #2f384b;">
+                    <div style="font-size:1.6rem; color:#7a9bcb;">${vocabCorrect}/15</div>
+                    <div style="color:#b7c9e6;">Vocabulary</div>
+                </div>
+                <div style="background:#1a212e; padding:0.8rem; border-radius:12px; text-align:center; border:1px solid #2f384b;">
+                    <div style="font-size:1.6rem; color:#7a9bcb;">${readingCorrect}/15</div>
+                    <div style="color:#b7c9e6;">Reading</div>
+                </div>
+                <div style="background:#1a212e; padding:0.8rem; border-radius:12px; text-align:center; border:1px solid #2f384b;">
+                    <div style="font-size:1.6rem; color:#7a9bcb;">${grammarCorrect}/10</div>
+                    <div style="color:#b7c9e6;">Grammar</div>
+                </div>
+            </div>
+            <div style="background:#2d5a40; padding:0.8rem; border-radius:12px; text-align:center; margin-bottom:0.5rem; border:1px solid #3c7a57;">
+                <div style="font-size:1.8rem; color:#9bdeac;">${totalCorrect}/${totalQuestions}</div>
+                <div style="color:#b7c9e6;">Total Score</div>
+            </div>
+            <p style="color:#7f8daa; text-align:center; font-size:0.9rem;">Full review below. Click "Save as PDF" to download.</p>
+        `;
+        resultsSummary.innerHTML = summaryHtml;
+        fullReviewContainer.innerHTML = reviewHtml;
+        fullReviewContainer.classList.remove('hidden');
+
+        if (quizTimer) { clearInterval(quizTimer); quizTimer = null; }
+
+        goToStep(3);
+    }
+
+    // ============================================================
+    // EVENT LISTENERS
+    // ============================================================
+    document.getElementById('startBtn').addEventListener('click', function() {
+        const name = document.getElementById('studentName').value.trim();
+        const id = document.getElementById('studentId').value.trim();
+        const cls = document.getElementById('studentClass').value.trim();
+        if (!name) { alert('Please enter your full name.'); return; }
+        if (!id) { alert('Please enter your student number.'); return; }
+        if (!cls) { alert('Please enter your class.'); return; }
+        renderQuestions();
+        goToStep(2);
+        startQuizTimer();
+        setupAntiCheat();
+    });
+
+    document.getElementById('submitBtn').addEventListener('click', function() {
+        if (confirm('Submit your answers? You cannot change them after submission.')) {
+            submitQuiz();
+        }
+    });
+
+    document.getElementById('previewBtn').addEventListener('click', function() {
+        if (isSubmitted) {
+            reviewContainer.classList.toggle('hidden');
+            return;
+        }
+        let html = '<h3 style="margin-bottom:0.8rem; color:#d6e5ff;">📝 Your Current Answers</h3>';
+        const sections = [
+            { name: '📖 Vocabulary', start: 0, end: 15 },
+            { name: '📚 Reading Comprehension', start: 15, end: 30 },
+            { name: '✏️ Grammar', start: 30, end: 40 }
+        ];
+        for (const sec of sections) {
+            html += `<div style="margin:0.8rem 0 0.5rem 0;"><strong style="color:#7a9bcb;">${sec.name}</strong></div>`;
+            for (let i = sec.start; i < sec.end; i++) {
+                const item = allQuestions[i];
+                const sel = selected[i];
+                const userAnswer = sel !== -1 ? item.options[sel] : '(not answered)';
+                const letter = sel !== -1 ? String.fromCharCode(65 + sel) : '-';
+                html += `
+                    <div class="question-item" style="margin-bottom:0.4rem;">
+                        <div class="q-text">${item.section} ${item.index}. ${item.q}</div>
+                        <div class="answer-review answer-unanswered">${letter}. ${userAnswer}</div>
+                    </div>
+                `;
+            }
+        }
+        reviewContainer.innerHTML = html;
+        reviewContainer.classList.remove('hidden');
+    });
+
+    document.getElementById('pdfBtn').addEventListener('click', function() {
+        window.print();
+    });
+
+    document.getElementById('restartBtn').addEventListener('click', function() {
+        if (confirm('Start over? All progress will be lost.')) {
+            location.reload();
+        }
+    });
+
+    // ============================================================
+    // INIT
+    // ============================================================
+    renderQuestions();
+    goToStep(1);
+
+    console.log('✅ HOT SEAT - TEXT 17 loaded!');
+    console.log('⏱️ 45-minute timer · 2-warning anti-cheat');
+</script>
+</body>
+</html>
